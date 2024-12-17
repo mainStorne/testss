@@ -6,7 +6,7 @@ on:
       - main  # Триггер на пуш в ветку main
 
 env:
-  CR_REPOSITORY: crp31fj9u7aj7h70jn5t/api
+  IMAGE_TAG: cr.yandex/crp31fj9u7aj7h70jn5t/api
 
 jobs:
   deploy:
@@ -25,8 +25,8 @@ jobs:
       - name: build docker image
 
         run: |
-          docker build -t cr.yandex/$CR_REPOSITORY:${{ github.sha }} -f project/Dockerfile .
-          docker push $CR_REPOSITORY:${{ github.sha }}
+          docker build -t $IMAGE_TAG:${{ github.sha }} -f project/Dockerfile .
+          docker push $IMAGE_TAG:${{ github.sha }}
 
 
       - name: Deploy Serverless Container
@@ -34,14 +34,14 @@ jobs:
         uses: yc-actions/yc-sls-container-deploy@v2
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-          container-name: yc-action-demo
+          container-name: sls-1
           folder-id: ${{secrets.FOLDER_ID}}
           revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
           revision-cores: 1
           revision-memory: 512Mb
           revision-core-fraction: 100
           revision-concurrency: 8
-          revision-image-url: cr.yandex/$CR_REPOSITORY:${{ github.sha }}
+          revision-image-url: $IMAGE_TAG:${{ github.sha }}
           revision-execution-timeout: 100
 
 
