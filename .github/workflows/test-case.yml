@@ -41,7 +41,7 @@ jobs:
           revision-memory: 512Mb
           revision-core-fraction: 100
           revision-concurrency: 8
-          revision-image-url: $IMAGE_TAG:${{ github.sha }}
+          revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/api:${{ github.sha }}
           revision-execution-timeout: 100
 
 

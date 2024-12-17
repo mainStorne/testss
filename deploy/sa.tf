@@ -15,6 +15,3 @@ output "api_sa_id" {
   value = yandex_iam_service_account.movies_api_sa.id
 }
 
-output "public_key" {
-  value = yandex_iam_service_account_key.api-auth-key.public_key
-}
