@@ -164,7 +164,7 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
-.hypothesis/
+tests/.hypothesis/
 .pytest_cache/
 cover/
 
