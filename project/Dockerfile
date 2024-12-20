@@ -16,4 +16,4 @@ WORKDIR /src
 RUN useradd -ms /bin/bash developer
 USER developer
 ENV PATH="/opt/venv/bin:$PATH"
-CMD ["python", "src/main.py"]
+CMD ["python", "main.py"]
