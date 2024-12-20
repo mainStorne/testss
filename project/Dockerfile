@@ -16,4 +16,4 @@ WORKDIR /src
 RUN useradd -ms /bin/bash developer
 USER developer
 ENV PATH="/opt/venv/bin:$PATH"
-CMD ["uvicorn", "application.app:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["python", "src/main.py"]

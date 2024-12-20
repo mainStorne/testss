@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: my-project
+  version: '0.1'
+
+x-yc-apigateway:
+  service_account_id: ${API_SA_ID}
+
+paths:
+  /{url+}:
+    x-yc-apigateway-any-method:
+      parameters:
+      - explode: false
+        in: path
+        name: url
+        required: false
+        style: simple
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: ${CONTAINER_ID}
+        tag: $latest
+
