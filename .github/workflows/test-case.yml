@@ -36,16 +36,6 @@ jobs:
           cd services/auth
           docker build -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
           docker push cr.yandex/$CR_ID/auth:${{ github.sha }}
-  deploy:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: deploy
-    needs: build-and-push
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Deploy Serverless Container
         id: deploy-sls-container
