@@ -12,6 +12,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       # Шаг 1. Клонирование репозитория
       - name: Checkout code
@@ -37,6 +38,9 @@ jobs:
           docker push cr.yandex/$CR_ID/auth:${{ github.sha }}
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aws/backend
     needs: build-and-push
 
     steps:
