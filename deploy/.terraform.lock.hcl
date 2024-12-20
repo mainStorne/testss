@@ -8,6 +8,14 @@ provider "registry.terraform.io/hashicorp/archive" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/null" {
+  version     = "3.2.2"
+  constraints = "3.2.2"
+  hashes = [
+    "h1:zT1ZbegaAYHwQa+QwIFugArWikRJI9dqohj8xb0GY88=",
+  ]
+}
+
 provider "registry.terraform.io/yandex-cloud/yandex" {
   version = "0.134.0"
   hashes = [

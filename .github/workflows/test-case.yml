@@ -6,10 +6,11 @@ on:
       - main  # Триггер на пуш в ветку main
 
 env:
+  CR_ID: crp31fj9u7aj7h70jn5t
   IMAGE_TAG: cr.yandex/crp31fj9u7aj7h70jn5t/api
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       # Шаг 1. Клонирование репозитория
@@ -28,20 +29,53 @@ jobs:
           docker build -t $IMAGE_TAG:${{ github.sha }} -f project/Dockerfile .
           docker push $IMAGE_TAG:${{ github.sha }}
 
+      - name: build and push auth service image
 
-      - name: Deploy Serverless Container
-        id: deploy-sls-container
-        uses: yc-actions/yc-sls-container-deploy@v2
+        run: |
+          cd services/auth
+          docker build -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
+          docker push cr.yandex/$CR_ID/auth:${{ github.sha }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-          container-name: sls-2
-          folder-id: ${{secrets.FOLDER_ID}}
-          revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
-          revision-cores: 1
-          revision-memory: 128Mb
-          revision-core-fraction: 100
-          revision-concurrency: 8
-          revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/api:${{ github.sha }}
-          revision-execution-timeout: 100
+          terraform_version: 1.5.7
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
 
 
+
+
+#      - name: Deploy Serverless Container
+#        id: deploy-sls-container
+#        uses: yc-actions/yc-sls-container-deploy@v2
+#        with:
+#          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+#          container-name: sls-2
+#          folder-id: ${{secrets.FOLDER_ID}}
+#          revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
+#          revision-cores: 1
+#          revision-memory: 128Mb
+#          revision-core-fraction: 100
+#          revision-concurrency: 8
+#          revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/api:${{ github.sha }}
+#          revision-execution-timeout: 100
+#
+#
