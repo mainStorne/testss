@@ -38,7 +38,7 @@ jobs:
           folder-id: ${{secrets.FOLDER_ID}}
           revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
           revision-cores: 1
-          revision-memory: 512Mb
+          revision-memory: 128Mb
           revision-core-fraction: 100
           revision-concurrency: 8
           revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/api:${{ github.sha }}

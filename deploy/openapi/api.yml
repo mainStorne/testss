@@ -7,16 +7,27 @@ x-yc-apigateway:
   service_account_id: ${API_SA_ID}
 
 paths:
-  /{url+}:
+  /{proxy+}:
     x-yc-apigateway-any-method:
       parameters:
-      - explode: false
+      - name: proxy
         in: path
-        name: url
-        required: false
-        style: simple
+        required: true
+        schema:
+          type: string
       x-yc-apigateway-integration:
         type: serverless_containers
         container_id: ${CONTAINER_ID}
         tag: $latest
 
+
+components:
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: api_key # Always present in request
+      x-yc-apigateway-authorizer:
+        type: function
+        function_id: ${FUNCTION_ID}
+        tag: $latest
