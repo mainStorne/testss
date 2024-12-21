@@ -13,7 +13,7 @@ r = APIRouter()
 
 val = 'dima'
 api_key = APIKeyHeader(name='api_key')
-oauth2 = OAuth2PasswordBearer(tokenUrl='https://bbald5m82a1inovcjg59.containers.yandexcloud.net/login')
+oauth2 = OAuth2PasswordBearer(tokenUrl='https://d5dsupapvtpbigih7i1l.apigw.yandexcloud.net/api/auth/login')
 
 @r.get('/')
 async def index(key=Depends(oauth2)):
