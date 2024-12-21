@@ -5,9 +5,13 @@ info:
 
 x-yc-apigateway:
   service_account_id: ${API_SA_ID}
+  cors:
+    origin: '*'
+    methods: '*'
+    allowedHeaders: '*'
 
 paths:
-  /{proxy+}:
+  /api/{proxy+}:
     x-yc-apigateway-any-method:
       parameters:
       - name: proxy
@@ -17,17 +21,20 @@ paths:
           type: string
       x-yc-apigateway-integration:
         type: serverless_containers
-        container_id: ${CONTAINER_ID}
+        container_id: ${API_CONTAINER_ID}
+        tag: $latest
+
+  /api/auth/{proxy+}:
+    x-yc-apigateway-any-method:
+      parameters:
+        - name: proxy
+          in: path
+          required: true
+          schema:
+            type: string
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: ${AUTH_CONTAINER_ID}
         tag: $latest
 
 
-components:
-  securitySchemes:
-    APIKeyHeader:
-      type: apiKey
-      in: header
-      name: api_key # Always present in request
-      x-yc-apigateway-authorizer:
-        type: function
-        function_id: ${FUNCTION_ID}
-        tag: $latest

@@ -13,9 +13,10 @@ r = APIRouter()
 
 val = 'dima'
 api_key = APIKeyHeader(name='api_key')
+oauth2 = OAuth2PasswordBearer(tokenUrl='https://bbald5m82a1inovcjg59.containers.yandexcloud.net/login')
 
 @r.get('/')
-async def index(key=Depends(api_key)):
+async def index(key=Depends(oauth2)):
     if key != val:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid API key')
     return {'hello': 'world'}

@@ -10,7 +10,7 @@ resource "yandex_container_repository" "api_repository" {
 
 resource "yandex_serverless_container" "container" {
   image {
-    url = "cr.yandex/crp31fj9u7aj7h70jn5t/api:9a2037d1d9c687e5dfc3f82ed34b1f992b153458"
+    url = "cr.yandex/crp31fj9u7aj7h70jn5t/api:7df15545fcaaf96a1383ca41701c34d0065d99de"
   }
   service_account_id = yandex_iam_service_account.movies_api_sa.id
   memory = 128
@@ -56,6 +56,24 @@ resource "yandex_serverless_container" "authorizer" {
     url = "cr.yandex/${yandex_container_registry.sls.id}/auth:latest"
   }
   depends_on = [null_resource.build_and_push_authorizer_image]
+}
+
+resource "yandex_container_repository" "auth-repo" {
+  name = "${yandex_container_registry.sls.id}/auth"
+}
+
+resource "yandex_container_repository_lifecycle_policy" "authorizer" {
+  repository_id = yandex_container_repository.auth-repo.id
+  status        = "active"
+    name          = "destroy"
+  rule {
+    description   = "destroy"
+    untagged      = false
+    tag_regexp    = ".*"
+    retained_top  = 1
+    expire_period = "24h"
+  }
+
 }
 
 

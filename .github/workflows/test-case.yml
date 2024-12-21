@@ -49,6 +49,22 @@ jobs:
         uses: yc-actions/yc-sls-container-deploy@v2
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          container-name: authorizer
+          folder-id: ${{secrets.FOLDER_ID}}
+          revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
+          revision-cores: 1
+          revision-memory: 128Mb
+          revision-core-fraction: 100
+          revision-concurrency: 8
+          revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/auth:${{ github.sha }}
+          revision-execution-time_out: 100
+
+
+      - name: Deploy Serverless Container
+        id: deploy-sls-container
+        uses: yc-actions/yc-sls-container-deploy@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           container-name: sls-2
           folder-id: ${{secrets.FOLDER_ID}}
           revision-service-account-id: ${{secrets.SERVICE_ACCOUNT_ID}}
@@ -57,6 +73,6 @@ jobs:
           revision-core-fraction: 100
           revision-concurrency: 8
           revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/api:${{ github.sha }}
-          revision-execution-timeout: 100
+          revision-execution-time_out: 100
 
 
