@@ -45,7 +45,7 @@ jobs:
           docker push $IMAGE_TAG:${{ github.sha }}
 
       - name: Deploy Serverless Container
-        id: deploy-sls-container
+        id: deploy-sls-container1
         uses: yc-actions/yc-sls-container-deploy@v2
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
@@ -61,7 +61,7 @@ jobs:
 
 
       - name: Deploy Serverless Container
-        id: deploy-sls-container
+        id: deploy-sls-container2
         uses: yc-actions/yc-sls-container-deploy@v2
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
