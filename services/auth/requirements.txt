@@ -35,6 +35,7 @@ pyrate-limiter==3.7.0
 pytest==8.3.4
 pytest-subtests==0.7.0
 python-dateutil==2.9.0.post0
+python-multipart==0.0.20
 PyYAML==6.0.2
 referencing==0.35.1
 requests==2.32.3
