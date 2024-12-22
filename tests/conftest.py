@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from project.src.application.app import app
+from services.api.application.app import app
 from pytest import fixture
 
 @fixture(scope='session')

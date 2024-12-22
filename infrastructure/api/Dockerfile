@@ -4,16 +4,17 @@ ENV PYTHONDONTWRITEBYTECODE 1  # Отключаем создание .pyc фай
 ENV PYTHONUNBUFFERED 1  # Убеждаемся, что вывод логов сразу идет в консоль (без буферизации)
 
 RUN pip install --upgrade pip
-COPY requirements.txt .
+COPY infrastructure/api/requirements.txt .
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install -r requirements.txt
 
 FROM python:3.12-slim
 COPY --from=builder /opt/venv /opt/venv
-WORKDIR /src
-COPY src .
+COPY services/api /api
+WORKDIR /api
 RUN useradd -ms /bin/bash developer
 USER developer
 ENV PATH="/opt/venv/bin:$PATH"
-CMD ["python", "main.py"]
+ENV PORT=8080
+CMD uvicorn application.app:app --host 0.0.0.0 --port ${PORT} --reload

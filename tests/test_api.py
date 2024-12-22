@@ -1,9 +1,8 @@
 import pytest
 import schemathesis
 from schemathesis import Case
-from project.src.application.app import app
-from pytest import fixture
-from httpx import AsyncClient
+from services.api.application.app import app
+
 schemathesis.experimental.OPEN_API_3_1.enable()
 schema = schemathesis.from_asgi('/openapi.json', app)
 

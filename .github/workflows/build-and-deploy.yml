@@ -10,18 +10,26 @@ env:
   IMAGE_TAG: cr.yandex/crp31fj9u7aj7h70jn5t/api
 
 jobs:
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build Image
+        run: docker build -f infrastructure/tests/Dockerfile -t tests .
+      - name: Run Tests in Container
+        run: docker run --rm tests
+
+
   build-and-push:
+    needs: tests
     runs-on: ubuntu-latest
 
     steps:
       # Шаг 1. Клонирование репозитория
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Build Image
-        run: docker build -t tests --file tests/Dockerfile .
-      - name: Run Tests in Container
-        run: docker run --rm tests
 
       - name: Login to Yandex Cloud Container Registry
         id: login-cr
@@ -31,8 +39,7 @@ jobs:
 
       - name: build and push auth service image
         run: |
-          cd services/auth
-          docker build -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
+          docker build -f infrastructure/auth/Dockerfile -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
           docker push cr.yandex/$CR_ID/auth:${{ github.sha }}
           
 
@@ -55,8 +62,7 @@ jobs:
       - name: build docker image
 
         run: |
-          cd project
-          docker build -t $IMAGE_TAG:${{ github.sha }} .
+          docker build -f infrastructure/api/Dockerfile -t $IMAGE_TAG:${{ github.sha }}  .
           docker push $IMAGE_TAG:${{ github.sha }}
 
 
