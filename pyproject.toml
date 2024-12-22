@@ -1,0 +1,10 @@
+[tool.pytest.init_options]
+testpaths = [
+    "tests"
+]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+    "project"
+]

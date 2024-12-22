@@ -5,10 +5,13 @@ ENV PYTHONUNBUFFERED 1  # Убеждаемся, что вывод логов с�
 
 WORKDIR /app
 
-RUN pip install --upgrade pip
-COPY ../requirements/requirements.txt .
-RUN pip install -r requirements.txt
-
 COPY ../tests ./tests
-COPY ../src ./src
+RUN pip install --upgrade pip
+RUN cd ./tests && pip install -r requirements.txt
+
+COPY ../project ./project
+COPY ../pyproject.toml ./pyproject.toml
+
+
+
 ENTRYPOINT [ "/bin/sh", "-c", "pytest" ]
