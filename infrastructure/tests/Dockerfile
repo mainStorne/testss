@@ -4,13 +4,13 @@ ENV PYTHONDONTWRITEBYTECODE 1  # Отключаем создание .pyc фай
 ENV PYTHONUNBUFFERED 1  # Убеждаемся, что вывод логов сразу идет в консоль (без буферизации)
 
 WORKDIR /app
-
-COPY ../tests ./tests
+COPY infrastructure/tests/requirements.txt .
 RUN pip install --upgrade pip
-RUN cd ./tests && pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
-COPY ../project ./project
-COPY ../pyproject.toml ./pyproject.toml
+COPY tests ./tests
+COPY services/api ./services/api
+COPY pyproject.toml ./pyproject.toml
 
 
 
