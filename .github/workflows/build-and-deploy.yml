@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Триггер на пуш в ветку main
+  pull_request:
+    branches: [ "main" ]
 
 env:
   CR_ID: crp31fj9u7aj7h70jn5t
