@@ -43,7 +43,20 @@ jobs:
         run: |
           docker build -f infrastructure/auth/Dockerfile -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
           docker push cr.yandex/$CR_ID/auth:${{ github.sha }}
-          
+
+      - name: Get IAM Token
+        id: iam-token
+        uses: yc-actions/yc-iam-token@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - name: Apply migrations
+        env:
+          YDB_ACCESS_TOKEN: ${{ steps.iam-token.outputs.token }}
+        run: |
+          cd services/auth
+          alembic revision --autogenerate -m "Migration ${{ github.sha }}"
+          alembic upgrade head
 
       - name: Deploy Serverless Container
         id: deploy-sls-container1
@@ -59,7 +72,7 @@ jobs:
           revision-concurrency: 8
           revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/auth:${{ github.sha }}
           revision-execution-time_out: 100
-          
+
 
       - name: build docker image
 
