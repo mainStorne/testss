@@ -11,8 +11,6 @@ from alembic import context
 from ydb import AccessTokenCredentials
 from ydb.aio.iam import MetadataUrlCredentials
 
-
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -81,9 +79,12 @@ async def run_async_migrations() -> None:
 
     """
     if not settings.IS_DEBUG:
+        ydb_access_token = os.environ.get('YDB_ACCESS_TOKEN')
+        if not ydb_access_token:
+            raise RuntimeError('YDB_ACCESS_TOKEN is not set')
         kwargs = {
             "connect_args": {
-                'credentials': AccessTokenCredentials(os.environ.get('YDB_ACCESS_TOKEN')),
+                'credentials': AccessTokenCredentials(ydb_access_token),
                 'protocol': 'grpcs'}
         }
     else:

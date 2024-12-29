@@ -50,18 +50,14 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
-      - name: Install alembic
-        run: |
-          python -m pip install --upgrade pip
-          pip install alembic==1.14.0
-
       - name: Apply migrations
         env:
           YDB_ACCESS_TOKEN: ${{ steps.iam-token.outputs.token }}
         run: |
-          cd services/auth
-          alembic revision --autogenerate -m "Migration ${{ github.sha }}"
-          alembic upgrade head
+          docker run --rm -e YDB_ACCESS_TOKEN=$YDB_ACCESS_TOKEN \
+          -e DOCUMENT_API_ENDPOINT=${{ secrets.DOCUMENT_API_ENDPOINT }} \
+          -e DOCUMENT_DATABASE_PATH=${{ secrets.DOCUMENT_DATABASE_PATH }} \
+          auth alembic upgrade head
 
       - name: Deploy Serverless Container
         id: deploy-sls-container1

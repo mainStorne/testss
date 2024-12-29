@@ -1,7 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.dialects import registry
 from pathlib import Path
 
-path = Path(__file__).parent.parent.parent.absolute() / '.env'
+path = Path(__file__).parent.parent.parent.absolute() / '.local.env'
+registry.register('sql.asyncydb', 'ydb_async.dialect', 'Dialect')
 
 
 class Settings(BaseSettings):
