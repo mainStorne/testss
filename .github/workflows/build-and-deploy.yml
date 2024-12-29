@@ -73,10 +73,13 @@ jobs:
           revision-concurrency: 8
           revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/auth:${{ github.sha }}
           revision-execution-time_out: 100
-          revision-env:
-            DOCUMENT_DATABASE_URL: ${{ secrets.DOCUMENT_DATABASE_URL }}
-            DOCUMENT_API_ENDPOINT: ${{ secrets.DOCUMENT_API_ENDPOINT }}
-            IS_DEBUG: False
+          revision-env: | 
+            DOCUMENT_DATABASE_URL=${{ secrets.DOCUMENT_DATABASE_URL }}
+            DOCUMENT_API_ENDPOINT=${{ secrets.DOCUMENT_API_ENDPOINT }}
+            IS_DEBUG=False
+
+            
+          
 
 
       - name: build docker image
