@@ -57,7 +57,7 @@ jobs:
           docker run --rm -e YDB_ACCESS_TOKEN=$YDB_ACCESS_TOKEN \
           -e DOCUMENT_API_ENDPOINT=${{ secrets.DOCUMENT_API_ENDPOINT }} \
           -e DOCUMENT_DATABASE_PATH=${{ secrets.DOCUMENT_DATABASE_PATH }} \
-          auth alembic upgrade head
+          cr.yandex/$CR_ID/auth:${{ github.sha }} alembic upgrade head
 
       - name: Deploy Serverless Container
         id: deploy-sls-container1
