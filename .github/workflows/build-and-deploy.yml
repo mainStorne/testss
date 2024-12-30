@@ -5,7 +5,6 @@ on:
     branches:
       - main  # Триггер на пуш в ветку main
   pull_request:
-    branches: [ "main" ]
 
 env:
   CR_ID: crp31fj9u7aj7h70jn5t
@@ -24,8 +23,9 @@ jobs:
         run: docker run --rm tests
 
 
-  build-and-push:
+  deploy:
     needs: tests
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -74,7 +74,7 @@ jobs:
           revision-image-url: cr.yandex/crp31fj9u7aj7h70jn5t/auth:${{ github.sha }}
           revision-execution-time_out: 100
           revision-env: | 
-            DOCUMENT_DATABASE_URL=${{ secrets.DOCUMENT_DATABASE_URL }}
+            DOCUMENT_DATABASE_PATH=${{ secrets.DOCUMENT_DATABASE_PATH }}
             DOCUMENT_API_ENDPOINT=${{ secrets.DOCUMENT_API_ENDPOINT }}
             IS_DEBUG=False
 
