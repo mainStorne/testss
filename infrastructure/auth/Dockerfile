@@ -17,4 +17,4 @@ RUN useradd -ms /bin/bash developer
 USER developer
 ENV PATH="/opt/venv/bin:$PATH"
 ENV PORT=8080
-CMD uvicorn application.app:app --host 0.0.0.0 --port ${PORT}
+CMD uvicorn application.app:app --host 0.0.0.0 --port ${PORT} --log-config=log_config.yml
