@@ -42,7 +42,7 @@ jobs:
 
       - name: build and push auth service image
         run: |
-          docker build -f services/auth/Dockerfile -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
+          docker build -f services/auth.Dockerfile -t cr.yandex/$CR_ID/auth:${{ github.sha }} .
           docker image tag cr.yandex/$CR_ID/auth:${{ github.sha }} cr.yandex/$CR_ID/auth:latest
           docker push -a cr.yandex/$CR_ID/auth
 
@@ -92,7 +92,7 @@ jobs:
       - name: build docker image
 
         run: |
-          docker build -f services/api/Dockerfile -t cr.yandex/$CR_ID/api:${{ github.sha }} .
+          docker build -f services/api.Dockerfile -t cr.yandex/$CR_ID/api:${{ github.sha }} .
           docker image tag cr.yandex/$CR_ID/api:${{ github.sha }} cr.yandex/$CR_ID/api:latest
           docker push -a cr.yandex/$CR_ID/api
 
