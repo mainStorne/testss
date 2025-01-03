@@ -5,6 +5,7 @@ from ydb_sqlalchemy.sqlalchemy import AsyncYqlDialect, AdaptedAsyncConnection
 from ydb_sqlalchemy.sqlalchemy.dbapi_adapter import AdaptedAsyncCursor
 from sqlalchemy.util import await_only
 from ydb_dbapi.utils import CursorStatus
+from .compiler import YqlDDLCompiler, YqlCompiler
 
 
 class AsyncCursor(AdaptedAsyncCursor):
@@ -29,6 +30,8 @@ class AsyncConnection(AdaptedAsyncConnection):
 
 class Dialect(AsyncYqlDialect):
     driver = 'asyncydb'
+    statement_compiler = YqlCompiler
+    ddl_compiler = YqlDDLCompiler
 
     def __init__(self, json_serializer=None,
                  json_deserializer=None,

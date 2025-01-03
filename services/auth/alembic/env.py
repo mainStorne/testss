@@ -9,7 +9,6 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 from ydb import AccessTokenCredentials
-from ydb.aio.iam import MetadataUrlCredentials
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,12 +23,10 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+from src.db import SQLModel
+from src.settings import Settings
 
-
-from application.db import Base
-from application.settings import Settings
-
-target_metadata = Base.metadata
+target_metadata = SQLModel.metadata
 settings = Settings()
 
 config.set_main_option('sqlalchemy.url', settings.sqlalchemy_url)

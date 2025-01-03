@@ -1,7 +1,7 @@
 import pytest
 import schemathesis
 from schemathesis import Case
-from services.api.application.app import app
+from services.api.main import app
 
 schemathesis.experimental.OPEN_API_3_1.enable()
 schema = schemathesis.from_asgi('/openapi.json', app)
